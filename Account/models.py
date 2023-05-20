@@ -34,3 +34,15 @@ class UserAccount(AbstractBaseUser, PermissionsMixin):
 
     def __str__(self):
         return self.email
+
+
+class UserProfile(models.Model):
+    user = models.OneToOneField(UserAccount, on_delete=models.CASCADE)
+    address = models.CharField(max_length=30)
+    country = models.CharField(max_length=30)
+    city = models.CharField(max_length=30)
+    birthdate = models.DateField()
+    bio = models.TextField(max_length=1000)
+
+    def __str__(self):
+        return f"Email: {self.user.get_username()} \nName: {self.user.get_full_name()}"
