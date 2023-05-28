@@ -28,7 +28,7 @@ INSTALLED_APPS = [
     'Account',
     'rest_framework',
     'djoser',
-    'corsheaders'
+
 ]
 
 MIDDLEWARE = [
@@ -103,9 +103,12 @@ REST_FRAMEWORK = {
 
 SIMPLE_JWT = {
     'AUTH_HEADER_TYPES': ('JWT',),
+    'USER_ID_FIELD': 'id',
+
 }
 
 DJOSER = {
+    'USER_ID_FIELD': 'username',
     'LOGIN_FIELD': 'email',
     'PASSWORD_RESET_CONFIRM_URL': '/password/reset/confirm/{uid}/{token}',
     'USERNAME_RESET_CONFIRM_URL': '/username/reset/confirm/{uid}/{token}',
@@ -119,7 +122,9 @@ DJOSER = {
     'SERIALIZERS': {
         'user_create': 'Account.serializers.CustomUserCreateSerializer',
         'user': 'Account.serializers.CustomUserSerializer',
-
+        'token': 'Account.serializers.CustomTokenSerializer',
+        # 'token_create': 'Account.serializers.CustomTokenCreateSerializer',
+        'token_create': 'Account.serializers.CustomTokenCreateSerializer'
     }
 }
 

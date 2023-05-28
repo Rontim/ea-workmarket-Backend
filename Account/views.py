@@ -2,7 +2,22 @@ from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework.permissions import IsAuthenticated
 from .models import UserProfile
-from .serializers import UserProfileSerializer
+from .serializers import UserProfileSerializer, UserProfileViewSerializer
+
+
+class UserProfileView(APIView):
+    def get(self, request, format=None):
+        user = request.user
+
+        try:
+            userProfile = UserProfile.objects.get(user=user)
+
+        except UserProfile.DoesNotExist:
+            return Response({"detail": "Profile does not exist."}, status=404)
+
+        serializer = UserProfileViewSerializer(userProfile)
+
+        return Response(serializer.data)
 
 
 class UserProfileCreateView(APIView):
