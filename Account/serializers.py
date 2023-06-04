@@ -33,6 +33,8 @@ class CustomUserSerializer(UserSerializer):
 
 
 class UserProfileSerializer(serializers.ModelSerializer):
+    skills = serializers.ListField(child=serializers.CharField())
+
     class Meta:
         model = UserProfile
         fields = '__all__'
@@ -46,7 +48,7 @@ class UserProfileSerializer(serializers.ModelSerializer):
             'bio': instance.bio,
         }
 
-        if role == 'Candidate':
+        if role == 'freelancer':
             representation.update({
                 'skills': instance.skills,
                 'education': instance.education,
@@ -55,7 +57,7 @@ class UserProfileSerializer(serializers.ModelSerializer):
 
             })
 
-        elif role == 'Employer':
+        elif role == 'creator':
             representation.update({
                 'company': instance.company,
                 'industry': instance.industry,

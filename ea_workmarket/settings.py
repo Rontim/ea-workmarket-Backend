@@ -28,13 +28,13 @@ INSTALLED_APPS = [
     'Account',
     'rest_framework',
     'djoser',
-
+    'jobs',
 ]
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
 
-    'corsheaders.middleware.CorsMiddleware',
+    # 'corsheaders.middleware.CorsMiddleware',
 
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
@@ -44,7 +44,7 @@ MIDDLEWARE = [
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
 
-CORS_ORIGIN_ALLOW_ALL = True
+# CORS_ORIGIN_ALLOW_ALL = True
 
 ROOT_URLCONF = 'ea_workmarket.urls'
 
@@ -103,8 +103,8 @@ REST_FRAMEWORK = {
 
 SIMPLE_JWT = {
     'AUTH_HEADER_TYPES': ('JWT',),
-    'USER_ID_FIELD': 'id',
-
+    'USER_ID_FIELD': 'username',
+    'USER_ID_FIELD_CLAIM': 'username',
 }
 
 DJOSER = {
