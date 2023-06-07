@@ -17,4 +17,4 @@ class BidSerializer(serializers.ModelSerializer):
 class JobAssignSerializer(serializers.ModelSerializer):
     class Meta:
         model = Jobs
-        fields = ('free_lancer')
+        fields = ["free_lancer"]
