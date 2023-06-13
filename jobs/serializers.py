@@ -1,8 +1,11 @@
 from rest_framework import serializers
 from .models import Jobs, JobBids
+from taggit.serializers import TaggitSerializer, TagListSerializerField
 
 
-class JobsSerializers(serializers.ModelSerializer):
+class JobsSerializers(TaggitSerializer, serializers.ModelSerializer):
+    tag = TagListSerializerField()
+
     class Meta:
         model = Jobs
         fields = '__all__'

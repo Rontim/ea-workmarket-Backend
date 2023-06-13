@@ -29,7 +29,7 @@ INSTALLED_APPS = [
     'rest_framework',
     'djoser',
     'jobs',
-    'jobs.apps.AppConfig'
+    'taggit',
 ]
 
 MIDDLEWARE = [
