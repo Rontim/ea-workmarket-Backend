@@ -17,29 +17,28 @@ jobs:
     steps:
       - uses: actions/checkout@v2
 
-      - name: Set up Python version and pipenv
-        uses: actions/setup-python@v2
+      - name: Set up Python version
+        uses: actions/setup-python@v1
         with:
           python-version: '3.11'
-          pip: 'pipenv'
 
-      - name: Create and activate virtual environment
+      - name: Create and start virtual environment
         run: |
-          pipenv install --dev
+          pip install pipenv
           pipenv shell
-
+      
       - name: Install dependencies
-        run: pipenv install --ignore-pipfile
-
+        run: pipenv install
+        
       # Optional: Add step to run tests here (PyTest, Django test suites, etc.)
-
+      
       - name: Upload artifact for deployment jobs
         uses: actions/upload-artifact@v2
         with:
           name: python-app
           path: |
             . 
-            !.venv/
+            !venv/
 
 
   deploy:
