@@ -33,9 +33,24 @@ class CustomUserSerializer(UserSerializer):
 
 
 class UserProfileSerializer(serializers.ModelSerializer):
+    skills = serializers.ListField(
+        child=serializers.CharField(), required=False)
+
     class Meta:
         model = UserProfile
         fields = '__all__'
+
+    def validate(self, attrs):
+        role = attrs.get('role')
+
+        if role == 'freelancer':
+            skills = attrs.get('skills')
+
+            if not skills:
+                raise serializers.ValidationError(
+                    'Skills field is required for freelancers')
+
+        return attrs
 
     def to_representation(self, instance):
 
@@ -46,7 +61,7 @@ class UserProfileSerializer(serializers.ModelSerializer):
             'bio': instance.bio,
         }
 
-        if role == 'Candidate':
+        if role == 'freelancer':
             representation.update({
                 'skills': instance.skills,
                 'education': instance.education,
@@ -55,7 +70,7 @@ class UserProfileSerializer(serializers.ModelSerializer):
 
             })
 
-        elif role == 'Employer':
+        elif role == 'creator':
             representation.update({
                 'company': instance.company,
                 'industry': instance.industry,

@@ -45,8 +45,8 @@ class UserAccount(AbstractBaseUser, PermissionsMixin):
 
 class UserProfile(models.Model):
     USER_ROLES = [
-        ('Candidate', 'Candidate'),
-        ('Employer', 'Employer'),
+        ('creator', 'creator'),
+        ('freelancer', 'freelancer'),
     ]
 
     user = models.OneToOneField(UserAccount, on_delete=models.CASCADE)
