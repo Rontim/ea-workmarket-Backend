@@ -82,3 +82,25 @@ def new_bidding_email(sender, created, instance, *args, **kwargs):
 
         send_mail(subject, message=plain_message,
                   from_email=None, html_message=html_message, recipient_list=recepient)
+
+
+@receiver(post_save, sender=Jobs)
+def assign_email(sender, created, instance, *args, **kwargs):
+    if instance.free_lancer:
+        subject = 'Job Assignment'
+        recepient = instance.creator.email
+
+        context = {
+            'job_title': instance.title,
+            'bidder_name': instance.free_lancer.get_full_name(),
+            'bidder_email': instance.free_lancer.email,
+            'bidder_rate': instance.free_lancer.rate,
+        }
+
+        template = 'email/job_assign_email.html'
+        html_message = render_to_string(
+            template_name=template, context=context)
+        plain_message = strip_tags(html_message)
+
+        send_mail(subject, message=plain_message,
+                  from_email=None, html_message=html_message, recipient_list=recepient)
