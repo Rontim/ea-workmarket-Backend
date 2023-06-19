@@ -25,10 +25,10 @@ jobs:
       - name: Create and start virtual environment
         run: |
           pip install pipenv
-          pipenv shell
+          TTY=false pipenv shell
       
       - name: Install dependencies
-        run: pipenv install
+        run: TTY=false pipenv install
         
       # Optional: Add step to run tests here (PyTest, Django test suites, etc.)
       
