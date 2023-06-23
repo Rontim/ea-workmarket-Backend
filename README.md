@@ -40,7 +40,3 @@ This documentation provides an overview of the API endpoints available in the EA
 
 - **POST /payments/initiate/**: Initiate a payment transaction.
 - **POST /payments/callback/**: Handle the payment callback request.
-
-Please note that the base URL for these endpoints should be replaced with the appropriate app name. For example, if the app name is "accounts", the base URL would be "/accounts/".
-
-For detailed information on each endpoint, including request and response formats, please refer to the API documentation.
