@@ -14,10 +14,10 @@ This documentation provides an overview of the API endpoints available in the EA
 
 ## User Profile
 
-- **GET /profile/ :** Retrieve a profile for read only or for authenticated user
-- **POST /profile/create/ :** Creating a new profile
-- **PUT /profile/update/ :** Update the full profile
-- **PATCH /profile/update/ :** Update a specific field
+- **GET /account/profile/ :** Retrieve a profile for read only or for authenticated user
+- **POST /account/profile/create/ :** Creating a new profile
+- **PUT /account/profile/update/ :** Update the full profile
+- **PATCH /account/profile/update/ :** Update a specific field
 
 ## Job Listings
 
