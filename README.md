@@ -5,12 +5,14 @@ This documentation provides an overview of the API endpoints available in the EA
 ## User Registration
 
 - **POST /auth/users/**: Register a new user.
+- **POST /auth/users//activate/{uid}/{token} :** Activate Account.
 
 ## User Authentication
 
 - **POST /auth/jwt/create/**: Obtain an authentication token.
 - **POST /auth/token/logout/**: Logout and invalidate the authentication token.
 - **POST /auth/jwt/create/**: Refresh the authentication token.
+- **POST /auth/users//password/reset/confirm/{uid}/{token} :** Reset password
 
 ## User Profile
 
