@@ -30,6 +30,8 @@ social-auth-core = "==4.4.1"
 sqlparse = "==0.4.4"
 urllib3 = "==1.26.15"
 django-cors-headers = "*"
+paypalrestsdk = "*"
+python-dotenv = "*"
 
 [dev-packages]
 
