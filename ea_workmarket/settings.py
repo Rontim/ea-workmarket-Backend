@@ -30,6 +30,7 @@ INSTALLED_APPS = [
     'djoser',
     'jobs',
     'taggit',
+    'payments',
 ]
 
 MIDDLEWARE = [
