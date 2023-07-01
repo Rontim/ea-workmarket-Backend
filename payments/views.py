@@ -1,14 +1,13 @@
-
-import json
-from .models import Payment, PaypalDetails, MpesaDetails
 import os
+import json
 import base64
 import requests
+from django.shortcuts import redirect
 from rest_framework.views import APIView
 from rest_framework import permissions
 from rest_framework.response import Response
 from rest_framework.decorators import api_view
-
+from .models import Payment, PaypalDetails, MpesaDetails
 from django.contrib.auth import get_user_model
 User = get_user_model()
 
@@ -77,3 +76,9 @@ class PayPalPayment(APIView):
 
         response = requests.post(url, headers=headers,
                                  data=json.dumps(payload))
+
+        if response.status_code == 201:
+            approve_url = response.json()['links'][1]['href']
+            return redirect(approve_url)
+        else:
+            return Response(status=response.status_code)
