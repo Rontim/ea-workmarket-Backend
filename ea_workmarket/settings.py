@@ -78,17 +78,23 @@ EMAIL_USE_TLS = True
 
 # Database
 # https://docs.djangoproject.com/en/4.2/ref/settings/#databases
-
+import environ
+env = environ.Env()
+environ.Env.read_env(os.path.join(BASE_DIR, '.env'))
+PSQL_HOST = env('PSQL_HOST')
+PSQL_USER = env('PSQL_USER')
+PSQL_PASSWORD = env("PSQL_PASSWORD")
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
         'NAME': 'ea_workmarket',
-        'HOST': os.environ.get("PSQL_HOST", "localhost"),
-        'USER': os.environ.get("PSQL_USER", ""),
-        "PASSWORD": os.environ.get("PSQL_PASSWORD", ""),
+        'HOST': PSQL_HOST,
+        'USER': PSQL_USER,
+        "PASSWORD": PSQL_PASSWORD,
+        "PORT": '5432',
         'OPTIONS': {
-            'sslmode': 'require',
-            'sslrootcert': '/path/to/cert.pem'
+            # 'sslmode': 'require',
+            # 'sslrootcert': '/path/to/cert.pem'
         },
     }
 }
