@@ -18,6 +18,12 @@ class UserAccountManager(BaseUserManager):
 
         return user
 
+    def create_superuser(self, email, username, first_name, last_name, password=None, **extra_fields):
+        extra_fields.setdefault('is_staff', True)
+        extra_fields.setdefault('is_superuser', True)
+
+        return self.create_user(email, username, first_name, last_name, password, **extra_fields)
+
 
 class UserAccount(AbstractBaseUser, PermissionsMixin):
     email = models.CharField(max_length=255, unique=True)
