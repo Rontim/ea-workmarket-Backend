@@ -1,5 +1,6 @@
 
 
+import environ
 from pathlib import Path
 import os
 
@@ -79,7 +80,6 @@ EMAIL_USE_TLS = True
 
 # Database
 # https://docs.djangoproject.com/en/4.2/ref/settings/#databases
-import environ
 env = environ.Env()
 environ.Env.read_env(os.path.join(BASE_DIR, '.env'))
 PSQL_HOST = env('PSQL_HOST')

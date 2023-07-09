@@ -11,6 +11,12 @@ class UserAccountManager(BaseUserManager):
             raise ValueError("Users must have an email")
 
         email = self.normalize_email(email)
+
+        if self.model.objects.filter(email=email).exists():
+            raise ValueError('Email already exists')
+        if self.model.objects.filter(username=username).exists():
+            raise ValueError('Username already exists')
+
         user = self.model(email=email, username=username,
                           first_name=first_name, last_name=last_name)
         user.set_password(password)
@@ -18,14 +24,17 @@ class UserAccountManager(BaseUserManager):
 
         return user
 
-    def create_superuser(self, email, username, first_name, last_name, password=None, **extra_fields):
-        extra_fields.setdefault('is_staff', True)
-        extra_fields.setdefault('is_superuser', True)
-
-        return self.create_user(email, username, first_name, last_name, password, **extra_fields)
+    def create_superuser(self, email, username, first_name, last_name, password=None):
+        user = self.create_user(email=email, username=username,
+                                first_name=first_name, last_name=last_name, password=password)
+        user.is_staff = True
+        user.is_superuser = True
+        user.save()
+        return user
 
 
 class UserAccount(AbstractBaseUser, PermissionsMixin):
+
     email = models.CharField(max_length=255, unique=True)
     username = models.CharField(
         max_length=100, unique=True, default='user name', primary_key=True)
@@ -38,6 +47,12 @@ class UserAccount(AbstractBaseUser, PermissionsMixin):
     REQUIRED_FIELDS = ['username', 'first_name', 'last_name']
 
     objects = UserAccountManager()
+
+    class Meta:
+        indexes = [
+            models.Index(fields=['email']),
+            models.Index(fields=['username']),
+        ]
 
     def get_full_name(self):
         return f'{self.first_name} {self.last_name}'
