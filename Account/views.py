@@ -2,7 +2,7 @@ from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework.permissions import IsAuthenticated, IsAuthenticatedOrReadOnly
 from .models import UserProfile
-from .serializers import UserProfileSerializer, UserProfileViewSerializer
+from .serializers import UserProfileSerializer, UserAccountProfileSerialzer
 
 
 class UserProfileView(APIView):
@@ -15,7 +15,7 @@ class UserProfileView(APIView):
         except UserProfile.DoesNotExist:
             return Response({"detail": "Profile does not exist."}, status=404)
 
-        serializer = UserProfileViewSerializer(userProfile)
+        serializer = UserAccountProfileSerialzer(userProfile)
 
         return Response(serializer.data)
 

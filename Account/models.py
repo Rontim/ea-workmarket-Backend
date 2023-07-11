@@ -70,7 +70,8 @@ class UserProfile(models.Model):
         ('freelancer', 'freelancer'),
     ]
 
-    user = models.OneToOneField(UserAccount, on_delete=models.CASCADE)
+    user = models.OneToOneField(
+        UserAccount, on_delete=models.CASCADE, related_name='profile')
     address = models.CharField(max_length=100, default='location')
     city = models.CharField(max_length=100, default='City')
     country = models.CharField(max_length=100, default='Country')

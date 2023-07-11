@@ -34,7 +34,7 @@ class JobBids(models.Model):
     job = models.ForeignKey(Jobs, on_delete=models.CASCADE)
     bidder = models.ForeignKey(User, on_delete=models.CASCADE)
     bid_amount = models.DecimalField(decimal_places=2, max_digits=10)
-    date_of_bidding = models.DateTimeField(default=timezone.now())
+    date_of_bidding = models.DateTimeField(default=timezone.now)
 
     def __str__(self):
         return f'Bid by {self.bidder.username} on Job {self.job.title}'

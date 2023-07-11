@@ -6,7 +6,7 @@ import os
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
-
+DJANGO_SETTINGS_MODULE = os.environ.get('DJANGO_SETTINGS_MODULE')
 
 # SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = 'django-insecure-*bs7q91==7k460s0@$so6$d!z5%jq_9@y+8=#8=7rj#)+d!ys7'
@@ -80,11 +80,9 @@ EMAIL_USE_TLS = True
 
 # Database
 # https://docs.djangoproject.com/en/4.2/ref/settings/#databases
-env = environ.Env()
-environ.Env.read_env(os.path.join(BASE_DIR, '.env'))
-PSQL_HOST = env('PSQL_HOST')
-PSQL_USER = env('PSQL_USER')
-PSQL_PASSWORD = env("PSQL_PASSWORD")
+PSQL_HOST = os.environ.get('PSQL_HOST')
+PSQL_USER = os.environ.get('PSQL_USER')
+PSQL_PASSWORD = os.environ.get('PSQL_PASSWORD')
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
@@ -93,10 +91,6 @@ DATABASES = {
         'USER': PSQL_USER,
         "PASSWORD": PSQL_PASSWORD,
         "PORT": '5432',
-        'OPTIONS': {
-            # 'sslmode': 'require',
-            # 'sslrootcert': '/path/to/cert.pem'
-        },
     }
 }
 
@@ -132,7 +126,7 @@ DJOSER = {
         'user': 'Account.serializers.CustomUserSerializer',
         'token': 'Account.serializers.CustomTokenSerializer',
         # 'token_create': 'Account.serializers.CustomTokenCreateSerializer',
-        'token_create': 'Account.serializers.CustomTokenCreateSerializer'
+        # 'token_create': 'Account.serializers.CustomTokenCreateSerializer'
     }
 }
 

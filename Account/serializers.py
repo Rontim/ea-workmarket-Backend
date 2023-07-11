@@ -9,10 +9,6 @@ from rest_framework import serializers
 from .models import UserAccount, UserProfile
 
 
-class CustomTokenCreateSerializer(TokenCreateSerializer):
-    pass
-
-
 class CustomTokenSerializer(TokenSerializer):
     email = serializers.EmailField(source="user.email")
 
@@ -82,44 +78,9 @@ class UserProfileSerializer(serializers.ModelSerializer):
         return representation
 
 
-class UserProfileViewSerializer(serializers.ModelSerializer):
-    email = serializers.SerializerMethodField()
-    name = serializers.SerializerMethodField()
+class UserAccountProfileSerialzer(serializers.ModelSerializer):
+    profile = UserProfileSerializer()
 
     class Meta:
-        model = UserProfile
-        fields = '__all__'
-
-    def to_representation(self, instance):
-        role = instance.role
-
-        representation = {}
-        user = instance.user
-        representation['email'] = user.email
-        representation['name'] = user.first_name
-        representation['role'] = role
-        representation['bio'] = instance.bio
-
-        if role == 'Candidate':
-            representation.update({
-                'skills': instance.skills,
-                'education': instance.education,
-                'experience': instance.experience,
-                'address': instance.address,
-            })
-
-        elif role == 'Employer':
-            representation.update({
-                'company': instance.company,
-                'industry': instance.industry,
-                'job_title': instance.job_title,
-                'company_location': instance.company_location,
-            })
-
-        return representation
-
-    def get_email(self, instance):
-        return instance.user.email
-
-    def get_name(self, instance):
-        return instance.user.first_name
+        model = UserAccount
+        fields = ['username', 'email', 'first_name', 'last_name', 'profile']
