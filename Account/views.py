@@ -3,6 +3,10 @@ from rest_framework.response import Response
 from rest_framework.permissions import IsAuthenticated, IsAuthenticatedOrReadOnly
 from .models import UserProfile
 from .serializers import UserProfileSerializer, UserAccountProfileSerialzer
+from rest_framework import status
+from django.contrib.auth import get_user_model
+
+User = get_user_model()
 
 
 class UserProfileView(APIView):
@@ -15,9 +19,9 @@ class UserProfileView(APIView):
         except UserProfile.DoesNotExist:
             return Response({"detail": "Profile does not exist."}, status=404)
 
-        serializer = UserAccountProfileSerialzer(userProfile)
+        serializer = UserAccountProfileSerialzer(instance=user)
 
-        return Response(serializer.data)
+        return Response(serializer.data, status=200)
 
 
 class UserProfileCreateView(APIView):
@@ -31,7 +35,7 @@ class UserProfileCreateView(APIView):
 
             serializer.save(user=user)
 
-            return Response(serializer.data, status=201)
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
 
         return Response(serializer.errors, status=400)
 
@@ -68,7 +72,7 @@ class UserProfileUpdateView(APIView):
 
         if serializer.is_valid():
             serializer.save()
-            return Response(serializer.data)
+            return Response(serializer.data, status=status.HTTP_200_OK)
 
         return Response(serializer.errors, status=400)
 
@@ -77,10 +81,11 @@ class ProfileView(APIView):
 
     def get(self, request, username, format=None):
         try:
-            profile = UserProfile.objects.get(username=username)
+            freelancer = User.objects.filter(username=username).first()
+            profile = UserProfile.objects.get(user=username)
         except UserProfile.DoesNotExist:
-            return Response({'detail': 'Profile does not exist'})
+            return Response({'detail': 'Profile does not exist'}, status=status.HTTP_404_NOT_FOUND)
 
-        serializer = UserProfileSerializer(profile)
+        serializer = UserAccountProfileSerialzer(instance=freelancer)
 
-        return Response(serializer.data)
+        return Response(serializer.data, status=status.HTTP_200_OK)
