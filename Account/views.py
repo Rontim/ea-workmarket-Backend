@@ -59,7 +59,7 @@ class UserProfileUpdateView(APIView):
         return Response(serializer.errors, status=400)
 
     def patch(self, request, format=None):
-        # Get the user associated with the request
+
         user = request.user
 
         try:

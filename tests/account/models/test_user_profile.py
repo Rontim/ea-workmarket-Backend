@@ -36,11 +36,20 @@ class UserProfileTests(APITestCase):
             'address': 'Kenya',
         }
 
-        print(self.user.is_authenticated)
         response = self.client.post(url, data)
 
         self.assertEqual(response.status_code, 201)
         self.assertTrue(UserProfile.objects.filter(user=self.user).exists())
+
+    def test_user_profile_invalid_create_view(self):
+        url = reverse('profile-create')
+        invalid_data = {
+
+        }
+        response = self.client.post(url, invalid_data)
+
+        self.assertEqual(response.status_code, 400)
+        self.assertFalse(UserProfile.objects.filter(user=self.user).exists())
 
     def test_user_profile_view(self):
         UserProfile.objects.create(
@@ -61,6 +70,12 @@ class UserProfileTests(APITestCase):
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         self.assertIn('username', response.data)
 
+    def test_user_profile_retrieval_for_non_existing_user(self):
+        url = reverse('profile')
+        response = self.client.get(url, format='json')
+        self.assertEqual(response.status_code, status.HTTP_404_NOT_FOUND)
+        self.assertEqual(response.data['detail'], 'Profile does not exist.')
+
     def test_user_profile_update_view(self):
         UserProfile.objects.create(
             user=self.user
@@ -71,7 +86,17 @@ class UserProfileTests(APITestCase):
             'bio': 'Testing profile update'
         }
         response = self.client.patch(url, data)
-        
+
         self.assertEqual(response.status_code, 200)
         self.assertTrue(UserProfile.objects.filter(
             user=self.user, **data).exists())
+
+    def test_unauthorized_access_to_user_profile(self):
+        self.client.force_authenticate(user=None)
+        url = reverse('profile')
+
+        response = self.client.get(url)
+
+        self.assertEqual(response.status_code, 401)
+        self.assertEqual(
+            response.data['detail'], 'Authentication credentials were not provided.')
