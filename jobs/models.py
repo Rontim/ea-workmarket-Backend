@@ -31,7 +31,7 @@ class Jobs(models.Model):
 
 
 class JobBids(models.Model):
-    job = models.ForeignKey(Jobs, on_delete=models.CASCADE)
+    job = models.ForeignKey(Jobs, on_delete=models.CASCADE, related_name='bids')
     bidder = models.ForeignKey(User, on_delete=models.CASCADE)
     bid_amount = models.DecimalField(decimal_places=2, max_digits=10)
     date_of_bidding = models.DateTimeField(default=timezone.now)
@@ -45,7 +45,7 @@ def send_mail_on_create(sender, created, instance, *args, **kwargs):
     if created:
         print("Job created")
         subject = 'Job Creation Notification'
-        recepient = [instance.creator.email]
+        recipient = [instance.creator.email]
 
         context = {
             'job_title': instance.title,
@@ -57,7 +57,7 @@ def send_mail_on_create(sender, created, instance, *args, **kwargs):
         plain_message = strip_tags(html_message)
 
         send_mail(subject, message=plain_message,
-                  from_email=None, html_message=html_message, recipient_list=recepient)
+                  from_email=None, html_message=html_message, recipient_list=recipient)
         print('email sent')
 
 
@@ -65,7 +65,7 @@ def send_mail_on_create(sender, created, instance, *args, **kwargs):
 def new_bidding_email(sender, created, instance, *args, **kwargs):
     if created:
         subject = 'New Bidding'
-        recepient = instance.job.creator.email
+        recipient = [instance.job.creator.email]
 
         context = {
             'bidder': instance.bidder,
@@ -81,15 +81,14 @@ def new_bidding_email(sender, created, instance, *args, **kwargs):
         plain_message = strip_tags(html_message)
 
         send_mail(subject, message=plain_message,
-                  from_email=None, html_message=html_message, recipient_list=recepient)
+                  from_email=None, html_message=html_message, recipient_list=recipient)
 
 
 @receiver(post_save, sender=Jobs)
 def assign_email(sender, created, instance, *args, **kwargs):
     if instance.free_lancer:
         subject = 'Job Assignment'
-        recepient = instance.creator.email
-
+        recipient = [instance.creator.email]
         context = {
             'job_title': instance.title,
             'bidder_name': instance.free_lancer.get_full_name(),
@@ -103,4 +102,4 @@ def assign_email(sender, created, instance, *args, **kwargs):
         plain_message = strip_tags(html_message)
 
         send_mail(subject, message=plain_message,
-                  from_email=None, html_message=html_message, recipient_list=recepient)
+                  from_email=None, html_message=html_message, recipient_list=recipient)

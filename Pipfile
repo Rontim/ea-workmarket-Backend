@@ -35,6 +35,7 @@ python-dotenv = "*"
 pytest = "*"
 django-environ = "*"
 pytest-django = "*"
+django-taggit = "*"
 
 [dev-packages]
 

@@ -14,10 +14,26 @@ class JobsSerializers(TaggitSerializer, serializers.ModelSerializer):
 class BidSerializer(serializers.ModelSerializer):
     class Meta:
         model = JobBids
-        fields = ('job', 'bidder', 'bid_amount', 'date_of_bidding')
+        fields = ['job', 'bidder', 'bid_amount', 'date_of_bidding']
+
+
+class JobBidSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = JobBids
+        fields = ('bidder', 'bid_amount', 'date_of_bidding')
 
 
 class JobAssignSerializer(serializers.ModelSerializer):
     class Meta:
         model = Jobs
         fields = ["free_lancer"]
+
+
+class JobDetailViewSerializer(serializers.ModelSerializer):
+    tag = TagListSerializerField()
+    bids = JobBidSerializer(many=True)
+
+    class Meta:
+        model = Jobs
+        fields = ['title', 'description', 'created_at', 'updated_at', 'creator', 'is_completed', 'completion_date',
+                  "verified", 'date_of_verification', 'tag', 'bids']
